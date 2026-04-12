@@ -12,9 +12,8 @@ export default function ArtistsView() {
       setLoading(false);
     });
   }, []);
-
+  
   if (loading) return <p>Loading artists...</p>;
-
   return (
     <div>
       <h1>Artists</h1>
