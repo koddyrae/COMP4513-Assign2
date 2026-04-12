@@ -1,4 +1,3 @@
-// src/views/GenresView.jsx
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { getGenres } from "../api";

@@ -1,4 +1,3 @@
-// src/views/ArtistView.jsx
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getArtist, getSongsByArtist } from "../api";
