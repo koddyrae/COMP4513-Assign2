@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import HomeView from "./views/HomeView";
 import ArtistsView from "./views/ArtistsView";
 import GenresView from "./views/GenresView";
+import GenreView from "./views/GenreView";
 import SongsView from "./views/SongsView";
 import SongView from "./views/SongView";
 import ArtistView from "./views/ArtistView";
@@ -27,6 +28,7 @@ export default function App() {
         <Route path="/artists" element={<ArtistsView />} />
         <Route path="/artists/:id" element={<ArtistView />} />
         <Route path="/genres" element={<GenresView />} />
+        <Route path="/genres/:id" element={<GenreView />} />
         <Route path="/songs" element={<SongsView playlist={playlist} setPlaylist={setPlaylist} />} />
         <Route path="/songs/:id" element={<SongView playlist={playlist} setPlaylist={setPlaylist} />} />
         <Route path="/playlists" element={<PlaylistView playlist={playlist} setPlaylist={setPlaylist} />} />

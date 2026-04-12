@@ -8,7 +8,6 @@ export default function LoginView({ setIsLoggedIn }) {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    // fake auth - just set logged in and redirect
     setIsLoggedIn(true);
     navigate("/");
   };
