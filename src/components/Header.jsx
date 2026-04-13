@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 
-export default function Header({ isLoggedIn, setIsLoggedIn, playlistCount }) {
+export default function Header({ isLoggedIn, setIsLoggedIn, playlistCount, setAboutOpen }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -18,7 +18,7 @@ export default function Header({ isLoggedIn, setIsLoggedIn, playlistCount }) {
         <Link to="/genres">Genres</Link>
         <Link to="/songs">Songs</Link>
         {isLoggedIn && <Link to="/playlists">Playlists</Link>}
-        <button>About</button>
+        <button onClick={() => setAboutOpen(true)}>About</button>
       </nav>
 
       <div>

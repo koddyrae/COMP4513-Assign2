@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import HomeView from "./views/HomeView";
@@ -11,10 +12,12 @@ import SongView from "./views/SongView";
 import ArtistView from "./views/ArtistView";
 import PlaylistView from "./views/PlaylistView";
 import LoginView from "./views/LoginView";
+import AboutDialog from "./components/AboutDialog";
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [playlist, setPlaylist] = useState([]);
+  const [aboutOpen, setAboutOpen] = useState(false);
 
   return (
     <BrowserRouter>
@@ -22,6 +25,7 @@ export default function App() {
         isLoggedIn={isLoggedIn}
         setIsLoggedIn={setIsLoggedIn}
         playlistCount={playlist.length}
+        setAboutOpen={setAboutOpen}
       />
       <Routes>
         <Route path="/" element={<HomeView />} />
@@ -35,6 +39,7 @@ export default function App() {
         <Route path="/login" element={<LoginView setIsLoggedIn={setIsLoggedIn} />} />
       </Routes>
       <Footer />
+      <AboutDialog open={aboutOpen} onOpenChange={setAboutOpen} />
     </BrowserRouter>
   );
 }
