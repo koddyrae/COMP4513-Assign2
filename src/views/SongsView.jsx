@@ -3,7 +3,7 @@ import { getSongs, getArtists, getGenres } from "../api";
 import SongList from "../components/SongList";
 import SongFilter from "../components/SongFilter";
 
-export default function SongsView({ playlist, setPlaylist }) {
+export default function SongsView({ onAddToPlaylist }) {
   const [songs, setSongs] = useState([]);
   const [artists, setArtists] = useState([]);
   const [genres, setGenres] = useState([]);
@@ -99,10 +99,7 @@ export default function SongsView({ playlist, setPlaylist }) {
          })}
         </div>
         <button onClick={clearAll}>X Clear All</button>
-        <SongList 
-          songs={filteredSongs} 
-          onAddToPlaylist={(song) => console.log("add", song)} 
-        />
+        <SongList songs={filteredSongs} onAddToPlaylist={onAddToPlaylist} />
       </div>
     </div>
   );

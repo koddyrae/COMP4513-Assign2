@@ -4,7 +4,7 @@ import { useParams, Link } from "react-router-dom";
 import { getSong, getArtist, getSongs } from "../api";
 import SongRadar from "../components/SongRadar";
 
-export default function SongView({ playlist, setPlaylist }) {
+export default function SongView() {
   const { id } = useParams();
   const [song, setSong] = useState(null);
   const [artist, setArtist] = useState(null);
@@ -22,7 +22,7 @@ useEffect(() => {
         .filter(s => s.song_id !== parseInt(id))
         .map(s => ({
           ...s,
-          score: analytics.reduce((sum, key) => sum + Math.abs(s[key] - songData[key] ?? 0), 0)
+          score: analytics.reduce((sum, key) => sum + Math.abs(s[key] - songData[key]), 0)
         }))
         .sort((a, b) => a.score - b.score)
         .slice(0, 4);

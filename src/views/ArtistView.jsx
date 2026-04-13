@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { getArtist, getSongsByArtist } from "../api";
 import SongList from "../components/SongList";
 
-export default function ArtistView() {
+export default function ArtistView({ onAddToPlaylist }) {
   const { id } = useParams();
   const [artist, setArtist] = useState(null);
   const [songs, setSongs] = useState([]);
@@ -39,7 +39,7 @@ export default function ArtistView() {
       </div>
 
       <h2>Songs</h2>
-        <SongList songs={songs} onAddToPlaylist={(song) => console.log("add", song)} />
+        <SongList songs={songs} onAddToPlaylist={onAddToPlaylist} />
     </div>
   );
 }

@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 
-export default function SongList({ songs, onAddToPlaylist }) {
+export default function SongList({ songs, onAddToPlaylist, onRemoveFromPlaylist }) {
   if (!songs || songs.length === 0) return <p>No songs found.</p>;
+
   return (
     <table>
       <thead>
@@ -23,7 +24,11 @@ export default function SongList({ songs, onAddToPlaylist }) {
             </td>
             <td>{song.year}</td>
             <td>
-              <button onClick={() => onAddToPlaylist(song)}>+</button>
+              {onRemoveFromPlaylist ? (
+                <button onClick={() => onRemoveFromPlaylist(song.song_id)}>-</button>
+              ) : (
+                <button onClick={() => onAddToPlaylist(song)}>+</button>
+              )}
             </td>
           </tr>
         ))}

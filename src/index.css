@@ -121,7 +121,9 @@
 }
 
 body {
-  margin: 0;
+  background-color: #09090b;
+  color: white;
+  min-height: 100vh;
 }
 
 #root {
