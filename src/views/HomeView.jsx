@@ -25,8 +25,11 @@ export default function HomeView() {
           <Link to="/songs" className="bg-violet-600 hover:bg-violet-700 text-white px-6 py-2.5 rounded-md font-medium transition">
             Browse Songs
           </Link>
-          <Link to="/artists" className="border border-zinc-600 hover:border-violet-400 text-zinc-300 hover:text-white px-6 py-2.5 rounded-md font-medium transition">
+          <Link to="/artists" className="bg-violet-600 hover:bg-violet-700 text-white px-6 py-2.5 rounded-md font-medium transition">
             Browse Artists
+          </Link>
+          <Link to="/genres" className="bg-violet-600 hover:bg-violet-700 text-white px-6 py-2.5 rounded-md font-medium transition">
+            Browse Genres
           </Link>
         </div>
       </div>
