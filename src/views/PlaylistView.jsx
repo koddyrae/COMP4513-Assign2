@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { getPlaylistNames, createPlaylist, deletePlaylist, getPlaylistSongs, removeSongFromPlaylist } from "../api";
 import SongList from "../components/SongList";
 import { toast } from "sonner";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function PlaylistView({ setCurrentPlaylist, setCurrentPlaylistCount }) {
   const [playlists, setPlaylists] = useState([]);
@@ -65,7 +66,7 @@ export default function PlaylistView({ setCurrentPlaylist, setCurrentPlaylistCou
     });
   };
 
-  if (loading) return <p>Loading playlists...</p>;
+  if (loading) return <LoadingSpinner message="Loading playlists..." />;
 
   return (
     <div>

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getSongsByGenre } from "../api";
 import SongList from "../components/SongList";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function GenreView({ onAddToPlaylist }) {
   const { id } = useParams();
@@ -15,7 +16,7 @@ export default function GenreView({ onAddToPlaylist }) {
     });
   }, [id]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <LoadingSpinner message="Loading Genres..." />;
 
   return (
     <div>

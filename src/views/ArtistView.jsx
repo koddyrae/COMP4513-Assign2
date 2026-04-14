@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { getArtist, getSongsByArtist } from "../api";
 import SongList from "../components/SongList";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function ArtistView({ onAddToPlaylist }) {
   const { id } = useParams();
@@ -17,7 +18,7 @@ export default function ArtistView({ onAddToPlaylist }) {
     });
   }, [id]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <LoadingSpinner message="Loading artists..." />;
 
   return (
     <div>

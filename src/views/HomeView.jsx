@@ -18,7 +18,6 @@ export default function HomeView() {
 
   return (
     <div className="min-h-screen bg-zinc-950">
-      {/* Hero Section */}
       <div className="flex flex-col items-center justify-center text-center py-24 px-6 bg-gradient-to-b from-violet-950 to-zinc-950">
         <h1 className="text-6xl font-bold text-white mb-4">SoundVault</h1>
         <p className="text-zinc-400 text-lg mb-8">Discover your next favorite artist, genre, or song.</p>
@@ -32,9 +31,11 @@ export default function HomeView() {
         </div>
       </div>
 
-      {/* Featured Artists */}
       {loading ? (
-        <p className="text-zinc-400 text-center py-12">Loading...</p>
+        <div className="flex flex-col items-center justify-center py-12">
+          <div className="w-12 h-12 border-4 border-zinc-700 border-t-violet-500 rounded-full animate-spin mb-4"></div>
+          <p className="text-zinc-400 text-sm">Loading artists...</p>
+        </div>
       ) : (
         <FeaturedArtists artists={featuredArtists} />
       )}

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { getSongs, getArtists, getGenres } from "../api";
 import SongList from "../components/SongList";
 import SongFilter from "../components/SongFilter";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function SongsView({ onAddToPlaylist }) {
   const [songs, setSongs] = useState([]);
@@ -57,7 +58,7 @@ export default function SongsView({ onAddToPlaylist }) {
     .filter(song => selectedGenres.length === 0 || selectedGenres.includes(song.genre_id))
     .sort((a, b) => a[sortBy] > b[sortBy] ? 1 : -1);
 
-  if (loading) return <p>Loading songs...</p>;
+  if (loading) return <LoadingSpinner message="Loading songs..." />;
 
   return (
     <div>

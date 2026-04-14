@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getSong, getArtist, getSongs } from "../api";
 import SongRadar from "../components/SongRadar";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function SongView() {
   const { id } = useParams();
@@ -31,7 +32,7 @@ useEffect(() => {
     });
   }, [id]);
 
-  if (loading) return <p>Loading song...</p>;
+  if (loading) return <LoadingSpinner message="Loading songs..." />;
 
   return (
     <div>

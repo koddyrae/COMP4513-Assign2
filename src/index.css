@@ -1,6 +1,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/inter";
+@import "tailwindcss";
 
 @tailwind base;
 
@@ -121,21 +122,22 @@
 }
 
 body {
+  margin: 0;
+  padding: 0;
   background-color: #09090b;
   color: white;
   min-height: 100vh;
 }
 
 #root {
-  width: 1126px;
+  width: 100%;
   max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+header, footer {
+  background-color: #18181b !important;
 }
 
 h1,

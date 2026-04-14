@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { getGenres } from "../api";
+import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function GenresView() {
   const [genres, setGenres] = useState([]);
@@ -13,7 +14,7 @@ export default function GenresView() {
     });
   }, []);
 
-  if (loading) return <p>Loading genres...</p>;
+  if (loading) return <LoadingSpinner message="Loading Genres..." />;
 
   return (
     <div>
