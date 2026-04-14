@@ -19,10 +19,10 @@ export default function GenreView({ onAddToPlaylist }) {
   if (loading) return <LoadingSpinner message="Loading Genres..." />;
 
   return (
-    <div>
-      <h1>{songs[0]?.genre_name}</h1>
-      <h2>Songs</h2>
-        <SongList songs={songs} onAddToPlaylist={onAddToPlaylist} />
+    <div className="px-8 py-6">
+      <h1 className="text-4xl font-bold text-white text-center">{songs[0]?.genre_name}</h1>
+      <h2 className="text-2xl font-semibold text-zinc-300 mt-6 text-center">Songs</h2>
+      <SongList songs={songs} onAddToPlaylist={onAddToPlaylist} />
     </div>
   );
 }
