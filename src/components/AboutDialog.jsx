@@ -14,14 +14,18 @@ export default function AboutDialog({ open, onOpenChange }) {
           <p>React, Vite, React Router, Recharts, shadcn/ui, Tailwind CSS</p>
           <br />
           <p><strong>Data</strong></p>
-          <p>Spotify song, artist, and genre data via a custom Node.js/Express API</p>
+          <p>Spotify song, artist, and genre data via a custom Node.js/Express/SQLite API</p>
           <br />
           <p><strong>Developer</strong></p>
-          <p>Koddy Rae</p>
+          <p>Koddy Rae Madriaga</p>
           <br />
-          <p><strong>GitHub</strong></p>
+          <p><strong>GitHub for SoundVault</strong></p>
           <a href="https://github.com/koddyrae/COMP4513-Assign2" target="_blank" rel="noreferrer">
             github.com/koddyrae/COMP4513-Assign2
+          </a>
+          <p><strong>GitHub for Custom API</strong></p>
+          <a href="https://github.com/koddyrae/COMP4513-assign1" target="_blank" rel="noreferrer">
+            github.com/koddyrae/COMP4513-assign1
           </a>
         </div>
       </DialogContent>
