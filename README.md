@@ -23,6 +23,9 @@ Deployed on GitHub Pages: https://koddyrae.github.io/COMP4513-Assign2/
 This app consumes the custom REST API built in Assignment 1:
 https://comp4513-assign1-tpay.onrender.com
 
+More information can be found at the Assignment 1 Repo:
+https://github.com/koddyrae/COMP4513-assign1
+
 ## Views
 
 | View | Description |
@@ -47,6 +50,7 @@ https://comp4513-assign1-tpay.onrender.com
 - Add and remove songs from playlists
 - Active filter chips with individual clear buttons
 - Toast notifications for playlist actions
+- Fake login (Didn't have enough time to implement it)
 
 ## Developer
 
