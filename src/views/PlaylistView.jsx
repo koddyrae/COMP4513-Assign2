@@ -6,14 +6,13 @@ import LoadingSpinner from "../components/LoadingSpinner";
 
 export default function PlaylistView({ setCurrentPlaylist, setCurrentPlaylistCount }) {
   const [playlists, setPlaylists] = useState([]);
-  const [selectedPlaylist, setSelectedPlaylist] = useState(null);
-  const [selectedSongs, setSelectedSongs] = useState([]);
+  const [expandedPlaylist, setExpandedPlaylist] = useState(null);
+  const [playlistSongs, setPlaylistSongs] = useState({});
   const [newPlaylistName, setNewPlaylistName] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getPlaylistNames().then(async (data) => {
-      // fetch song counts for all playlists
       const playlistsWithCounts = await Promise.all(
         data.map(async (pl) => {
           const songs = await getPlaylistSongs(pl.id);
@@ -25,102 +24,123 @@ export default function PlaylistView({ setCurrentPlaylist, setCurrentPlaylistCou
     });
   }, []);
 
-  const handleSelectPlaylist = (pl) => {
-    setSelectedPlaylist(pl);
+  const handleTogglePlaylist = (pl) => {
+    if (expandedPlaylist?.id === pl.id) {
+      setExpandedPlaylist(null);
+      return;
+    }
+    setExpandedPlaylist(pl);
     setCurrentPlaylist(pl);
     getPlaylistSongs(pl.id).then(data => {
-      if (data.error) {
-        setSelectedSongs([]);
-        setCurrentPlaylistCount(0);
-      } else {
-        setSelectedSongs(data);
-        setCurrentPlaylistCount(data.length);
-      }
+      const songs = data.error ? [] : data;
+      setPlaylistSongs(prev => ({ ...prev, [pl.id]: songs }));
+      setCurrentPlaylistCount(songs.length);
     });
   };
 
   const handleCreatePlaylist = () => {
     if (!newPlaylistName.trim()) return;
     createPlaylist(newPlaylistName).then(data => {
-      setPlaylists(prev => [...prev, data]);
+      setPlaylists(prev => [...prev, { ...data, count: 0 }]);
       setNewPlaylistName("");
     });
   };
 
-  const handleDeletePlaylist = (id) => {
-    deletePlaylist(id).then(() => {
-      setPlaylists(prev => prev.filter(p => p.id !== id));
-      if (selectedPlaylist?.id === id) {
-        setSelectedPlaylist(null);
-        setSelectedSongs([]);
-      }
-    });
-  };
-
+const handleDeletePlaylist = (id) => {
+  const playlist = playlists.find(p => p.id === id);
+  deletePlaylist(id).then(() => {
+    setPlaylists(prev => prev.filter(p => p.id !== id));
+    if (expandedPlaylist?.id === id) {
+      setExpandedPlaylist(null);
+    }
+    toast.success(`Deleted playlist "${playlist.name}"!`);
+  });
+};
   const handleRemoveSong = (songId) => {
-    const song = selectedSongs.find(s => s.song_id === songId);
-    removeSongFromPlaylist(selectedPlaylist.id, songId).then(() => {
-      setSelectedSongs(prev => prev.filter(s => s.song_id !== songId));
+    const songs = playlistSongs[expandedPlaylist.id] || [];
+    const song = songs.find(s => s.song_id === songId);
+    removeSongFromPlaylist(expandedPlaylist.id, songId).then(() => {
+      setPlaylistSongs(prev => ({
+        ...prev,
+        [expandedPlaylist.id]: prev[expandedPlaylist.id].filter(s => s.song_id !== songId)
+      }));
+      setPlaylists(prev => prev.map(p =>
+        p.id === expandedPlaylist.id ? { ...p, count: p.count - 1 } : p
+      ));
       setCurrentPlaylistCount(prev => prev - 1);
-      toast.success(`Removed "${song.title}" from ${selectedPlaylist.name}!`);
+      toast.success(`Removed "${song.title}" from ${expandedPlaylist.name}!`);
     });
   };
 
   if (loading) return <LoadingSpinner message="Loading playlists..." />;
 
   return (
-    <div>
-      <h1>Playlists</h1>
+    <div className="h-full overflow-y-auto px-8 py-6 text-white">
+      <h1 className="text-4xl font-bold mb-8">Playlists</h1>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th># Songs</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {playlists.length === 0 ? (
-            <tr>
-              <td colSpan="3">No playlists yet.</td>
-            </tr>
-          ) : (
-            playlists.map(pl => (
-              <tr 
-                key={pl.id} 
-                onClick={() => handleSelectPlaylist(pl)}
-                style={{ cursor: "pointer", fontWeight: selectedPlaylist?.id === pl.id ? "bold" : "normal" }}
-              >
-                <td>{pl.name}</td>
-                <td>{pl.id === selectedPlaylist?.id ? selectedSongs.length : pl.count}</td>
-                <td>
-                  <button onClick={(e) => { e.stopPropagation(); handleDeletePlaylist(pl.id); }}>-</button>
-                </td>
-              </tr>
-            ))
-          )}
-        </tbody>
-      </table>
-
-      <div>
-        <label>Name</label>
+      <div className="flex gap-3 mb-8 max-w-md">
         <input
           type="text"
           value={newPlaylistName}
           onChange={e => setNewPlaylistName(e.target.value)}
+          onKeyDown={e => e.key === "Enter" && handleCreatePlaylist()}
           placeholder="New playlist name..."
+          className="flex-1 bg-zinc-800 text-white text-sm rounded-md px-4 py-2 border border-zinc-700 placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-violet-500"
         />
-        <button onClick={handleCreatePlaylist}>+</button>
+        <button
+          onClick={handleCreatePlaylist}
+          className="bg-violet-600 hover:bg-violet-500 text-white text-sm font-medium px-5 py-2 rounded-md transition-colors"
+        >
+          + Create
+        </button>
       </div>
 
-      {selectedPlaylist && (
-        <div>
-          <h2>{selectedPlaylist.name}</h2>
-          <SongList 
-            songs={selectedSongs}
-            onRemoveFromPlaylist={handleRemoveSong}
-          />
+      {playlists.length === 0 ? (
+        <p className="text-zinc-400 text-sm">No playlists yet. Create one above!</p>
+      ) : (
+        <div className="space-y-3">
+          {playlists.map(pl => {
+            const isExpanded = expandedPlaylist?.id === pl.id;
+            const songs = playlistSongs[pl.id] || [];
+
+            return (
+              <div key={pl.id} className="bg-zinc-900 border border-zinc-700 rounded-xl overflow-hidden">
+
+                <div
+                  className="flex items-center justify-between px-5 py-4 cursor-pointer hover:bg-zinc-800 transition-colors"
+                  onClick={() => handleTogglePlaylist(pl)}
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-lg">{isExpanded ? "▾" : "▸"}</span>
+                    <span className="font-medium text-violet-400">{pl.name}</span>
+                    <span className="text-xs text-zinc-400 bg-zinc-800 border border-zinc-700 px-2 py-0.5 rounded-full">
+                      {isExpanded ? songs.length : pl.count} songs
+                    </span>
+                  </div>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); handleDeletePlaylist(pl.id); }}
+                    className="text-red-400 hover:text-red-500 text-sm px-2 py-1 rounded transition-colors"
+                  >
+                    Delete
+                  </button>
+                </div>
+
+                {isExpanded && (
+                  <div className="border-t border-zinc-700">
+                    {songs.length === 0 ? (
+                      <p className="text-zinc-400 text-sm px-5 py-4">No songs in this playlist yet.</p>
+                    ) : (
+                      <SongList
+                        songs={songs}
+                        onRemoveFromPlaylist={handleRemoveSong}
+                      />
+                    )}
+                  </div>
+                )}
+
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

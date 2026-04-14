@@ -53,7 +53,17 @@ const handleAddToPlaylist = (song) => {
         <Route path="/login" element={<LoginView setIsLoggedIn={setIsLoggedIn} />} />
       </Routes>
       <Footer />
-      <Toaster />
+      <Toaster
+        position="top-center"
+        theme="dark"
+        toastOptions={{
+          classNames: {
+            toast: "!bg-zinc-900 !border-2 !border-violet-500 !text-white",
+            title: "!text-white",
+            description: "!text-zinc-400",
+          }
+        }}
+      />
       <AboutDialog open={aboutOpen} onOpenChange={setAboutOpen} />
     </BrowserRouter>
   );

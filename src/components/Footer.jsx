@@ -8,7 +8,7 @@ export default function Footer() {
         </div>
         <div className="flex flex-col items-center gap-1">
           <p className="text-zinc-500 text-sm">COMP 4513 Assignment 2</p>
-          <p className="text-zinc-500 text-sm">Koddy Rae</p>
+          <p className="text-zinc-500 text-sm">Koddy Rae Madriaga</p>
         </div>
         <a 
           href="https://github.com/koddyrae/COMP4513-Assign2" 
