@@ -27,19 +27,19 @@ export default function SongsView({ onAddToPlaylist }) {
   }, []);
 
   const toggleYear = (year) => {
-    setSelectedYears(prev => 
+    setSelectedYears(prev =>
       prev.includes(year) ? prev.filter(y => y !== year) : [...prev, year]
     );
   };
 
   const toggleArtist = (id) => {
-    setSelectedArtists(prev => 
+    setSelectedArtists(prev =>
       prev.includes(id) ? prev.filter(a => a !== id) : [...prev, id]
     );
   };
 
   const toggleGenre = (id) => {
-    setSelectedGenres(prev => 
+    setSelectedGenres(prev =>
       prev.includes(id) ? prev.filter(g => g !== id) : [...prev, id]
     );
   };
@@ -58,49 +58,86 @@ export default function SongsView({ onAddToPlaylist }) {
     .filter(song => selectedGenres.length === 0 || selectedGenres.includes(song.genre_id))
     .sort((a, b) => a[sortBy] > b[sortBy] ? 1 : -1);
 
+  const activeFilters = [
+    ...(titleFilter ? [{ label: titleFilter, clear: () => setTitleFilter("") }] : []),
+    ...selectedYears.map(year => ({ label: year, clear: () => toggleYear(year) })),
+    ...selectedArtists.map(id => ({
+      label: artists.find(a => a.artist_id === id)?.artist_name,
+      clear: () => toggleArtist(id),
+    })),
+    ...selectedGenres.map(id => ({
+      label: genres.find(g => g.genre_id === id)?.genre_name,
+      clear: () => toggleGenre(id),
+    })),
+  ];
+
   if (loading) return <LoadingSpinner message="Loading songs..." />;
 
   return (
-    <div>
-      <h1>Songs</h1>
-      <div>
-        <SongFilter 
-          artists={artists}
-          genres={genres}
-          years={years}
-          titleFilter={titleFilter}
-          setTitleFilter={setTitleFilter}
-          selectedYears={selectedYears}
-          toggleYear={toggleYear}
-          selectedArtists={selectedArtists}
-          toggleArtist={toggleArtist}
-          selectedGenres={selectedGenres}
-          toggleGenre={toggleGenre}
-        />
-        <div>
-          <label>Sort by</label>
-          <select value={sortBy} onChange={e => setSortBy(e.target.value)}>
-            <option value="title">Title</option>
-            <option value="year">Year</option>
-            <option value="artist_name">Artist</option>
-          </select>
+    <div className="flex flex-col h-screen overflow-hidden px-8 py-6">
+      <h1 className="text-4xl font-bold text-white mb-6">Songs</h1>
+      <div className="flex gap-6 flex-1 min-h-0">
+        <aside className="w-64 shrink-0 bg-zinc-900 border border-zinc-700 rounded-xl p-5 overflow-y-auto">
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-3">Sort By</h2>
+              <select
+                value={sortBy}
+                onChange={e => setSortBy(e.target.value)}
+                className="w-full bg-zinc-800 text-white text-sm rounded-md px-3 py-2 border border-zinc-700 focus:outline-none focus:ring-1 focus:ring-zinc-500"
+              >
+                <option value="title">Title</option>
+                <option value="year">Year</option>
+                <option value="artist_name">Artist</option>
+              </select>
+            </div>
+
+            <div>
+              <h2 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider mb-3">Filters</h2>
+              <SongFilter
+                artists={artists}
+                genres={genres}
+                years={years}
+                titleFilter={titleFilter}
+                setTitleFilter={setTitleFilter}
+                selectedYears={selectedYears}
+                toggleYear={toggleYear}
+                selectedArtists={selectedArtists}
+                toggleArtist={toggleArtist}
+                selectedGenres={selectedGenres}
+                toggleGenre={toggleGenre}
+              />
+            </div>
+
+            {activeFilters.length > 0 && (
+              <button
+                onClick={clearAll}
+                className="w-full text-sm text-zinc-400 hover:text-white border border-zinc-700 hover:border-zinc-500 rounded-md py-2 transition-colors"
+              >
+                ✕ Clear All
+              </button>
+            )}
+          </div>
+        </aside>
+
+        <div className="flex-1 min-w-0 flex flex-col min-h-0">
+          {activeFilters.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-4 shrink-0">
+              {activeFilters.map((f, i) => (
+                <span
+                  key={i}
+                  className="flex items-center gap-1 bg-zinc-800 text-zinc-200 text-sm px-3 py-1 rounded-full border border-zinc-700"
+                >
+                  {f.label}
+                  <button onClick={f.clear} className="text-zinc-400 hover:text-white ml-1">✕</button>
+                </span>
+              ))}
+            </div>
+          )}
+          <div className="overflow-y-auto flex-1">
+            <SongList songs={filteredSongs} onAddToPlaylist={onAddToPlaylist} />
+          </div>
         </div>
-        <div>
-          {titleFilter && <span>{titleFilter} <button onClick={() => setTitleFilter("")}>x</button></span>}
-          {selectedYears.map(year => (
-            <span key={year}>{year} <button onClick={() => toggleYear(year)}>x</button></span>
-          ))}
-          {selectedArtists.map(id => {
-            const artist = artists.find(a => a.artist_id === id);
-              return <span key={id}>{artist?.artist_name} <button onClick={() => toggleArtist(id)}>x</button></span>
-          })}
-          {selectedGenres.map(id => {
-            const genre = genres.find(g => g.genre_id === id);
-              return <span key={id}>{genre?.genre_name} <button onClick={() => toggleGenre(id)}>x</button></span>
-         })}
-        </div>
-        <button onClick={clearAll}>X Clear All</button>
-        <SongList songs={filteredSongs} onAddToPlaylist={onAddToPlaylist} />
       </div>
     </div>
   );
