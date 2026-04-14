@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import { addSongToPlaylist } from "./api";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
@@ -34,7 +35,7 @@ const handleAddToPlaylist = (song) => {
 };
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Header 
         isLoggedIn={isLoggedIn}
         setIsLoggedIn={setIsLoggedIn}
@@ -65,6 +66,6 @@ const handleAddToPlaylist = (song) => {
         }}
       />
       <AboutDialog open={aboutOpen} onOpenChange={setAboutOpen} />
-    </BrowserRouter>
+    </HashRouter>
   );
 }
