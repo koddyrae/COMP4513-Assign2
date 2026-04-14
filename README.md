@@ -1,16 +1,53 @@
-# React + Vite
+# COMP 4513 Assignment 2
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
 
-Currently, two official plugins are available:
+A music discovery web application built with React for exploring Spotify song, artist, and genre data. Users can browse songs, artists, and genres, view detailed song analytics, create and manage playlists, and filter/sort content interactively.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Built With
 
-## React Compiler
+- **React** - UI framework
+- **Vite** - Build tool
+- **React Router** - Client-side routing
+- **Tailwind CSS** - Styling
+- **shadcn/ui** - Component library
+- **Recharts** - Data visualizations (radar chart)
+- **Sonner** - Toast notifications
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Hosting
 
-## Expanding the ESLint configuration
+Deployed on GitHub Pages: https://koddyrae.github.io/COMP4513-Assign2/
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## API
+
+This app consumes the custom REST API built in Assignment 1:
+https://comp4513-assign1-tpay.onrender.com
+
+## Views
+
+| View | Description |
+| --- | --- |
+| Home | Landing page with featured artists and navigation |
+| Songs | Browse all songs with sidebar filtering by title, year, artist, and genre |
+| Song | Detailed song view with audio profile radar chart and related songs |
+| Artists | Browse all artists |
+| Artist | Artist detail page with their songs |
+| Genres | Browse all genres with cover images |
+| Genre | Genre detail page with its songs |
+| Playlists | Create, delete, and manage playlists with expandable song lists |
+| Login | Login page |
+
+## Features
+
+- Filter songs by title, year, artist, and genre
+- Sort songs by title, year, or artist
+- View audio analytics (danceability, energy, valence, etc.) as a radar chart
+- Related song suggestions based on audio profile similarity
+- Create and delete playlists
+- Add and remove songs from playlists
+- Active filter chips with individual clear buttons
+- Toast notifications for playlist actions
+
+## Developer
+
+Koddy Rae Madriaga
